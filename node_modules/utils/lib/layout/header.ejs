@@ -1,0 +1,88 @@
+<!-- views/includes/header.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Admin</title>
+    <link id="pagestyle" href="/assets/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="assets/css/all.min.css">
+    <link rel="stylesheet" href="public/assets/css/fontawesome.min.css">
+
+    <!-- DataTables CSS -->
+    <link type="text/css" charset="utf8" rel="stylesheet"  href="/assets/css/datatables.css">
+    <link type="text/css" charset="utf8" rel="stylesheet" href="/assets/css/datatables.min.css">
+    <link type="text/css" charset="utf8" rel="stylesheet" href="/assets/css/jquery.dataTables.min.css">
+    
+    <script type="text/javascript" charset="utf8" src="/assets/js/fontawesome.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="/assets/js/bootstrap.min.js"></script>
+    
+    <script type="text/javascript" charset="utf8" src="/assets/js/all.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="/assets/js/datatables.js"></script>
+    <script type="text/javascript" charset="utf8" src="/assets/js/datatables.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="/assets/js/jquery.js"></script>
+    <script type="text/javascript" charset="utf8" src="/assets/js/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="/assets/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="/assets/js/jquery.dataTables.min.js"></script>
+    <!-- <script src="/assets/js/dataTables.bootstrap4.js"></script> -->
+    <style>
+
+        /* CSS untuk navbar */
+        .navbar {
+            position: fixed; /* Tetapkan navbar di posisi tetap */
+            top: 0; /* Atur navbar di bagian atas */
+            left: 0;
+            width: 100%; /* Lebarkan navbar sampai ke seluruh lebar layar */
+            z-index: 1000; /* Atur z-index agar navbar selalu di atas elemen lain */
+            background-color: rgb(255, 255, 255); /* Warna background navbar */
+        }
+        .sidebar-toggle {
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* CSS untuk sidebar */
+        .sidebar {
+            position: fixed; /* Tetapkan sidebar di posisi tetap */
+            top: 10; /* Atur posisi sidebar di bagian atas */
+            left: 0; /* Atur posisi sidebar di sebelah kiri */
+            width: 250px; /* Atur lebar sidebar */
+            height: 100%; /* Gunakan tinggi penuh untuk sidebar */
+            background-color: rgb(0, 60, 75); /* Warna background sidebar */
+            color: #fff; /* Warna teks pada sidebar */
+            z-index: 900;
+        }
+
+        .nav-link {
+            padding: 10px 20px; /* Padding pada setiap link */
+            color: #fff; /* Warna teks pada link */
+        }
+
+        .nav-link:hover {
+            background-color: #0000004d; /* Warna latar belakang link saat dihover */
+        }
+
+        /* CSS untuk konten dan footer */
+        .content-wrapper {
+            margin-top: 56px; /* Menggunakan tinggi navbar sebagai margin atas */
+            margin-left: 250px; /* Menggunakan lebar sidebar sebagai margin kiri */
+            width: calc(100% - 250px); /* Menggunakan kalkulasi untuk lebar konten */
+            min-height: calc(100vh - 56px); /* Menggunakan kalkulasi untuk tinggi konten */
+            background-color: #f0f0f0; /* Warna latar belakang konten */
+            padding: 20px; /* Padding untuk konten */
+            box-sizing: border-box; /* Pastikan padding tidak mempengaruhi lebar */
+        }
+
+        footer {
+            position: fixed; /* Tetapkan footer di posisi tetap */
+            bottom: 0; /* Atur posisi footer di bagian bawah */
+            width: 100%; /* Lebarkan footer sampai ke seluruh lebar layar */
+            background-color: rgba(74, 74, 74, 0.297); /* Warna latar belakang footer */
+            color: #fff; /* Warna teks pada footer */
+            text-align: center;
+            padding: 10px 0; /* Padding atas dan bawah pada footer */
+        }
+    </style>
+</head>

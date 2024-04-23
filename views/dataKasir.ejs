@@ -1,0 +1,205 @@
+<%- include ('layout/header') %>
+<%- include ('layout/navAdmin') %>
+<head>
+    <link id="pagestyle" href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <script type="text/javascript" charset="utf8" src="/assets/js/bootstrap.min.js"></script>
+  <style>
+       .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000; 
+        }
+      .form-table {
+            width: 70%;
+            border-collapse: collapse;
+            margin: 20px;
+            /* Tambahkan gaya lain sesuai kebutuhan Anda */
+        }
+        .form-table td {   
+            padding: 4px;
+            text-align: left;
+        }
+
+        .input-field {
+        width: 80%;
+        padding: 1px;
+        outline: none;
+        border: 1 solid rgb(212, 212, 212);
+        border-radius: 3px  ;   
+         margin-top: 6px;
+        }
+
+        .input-field:focus {
+        border: 2px solid rgb(71, 170, 236);
+        }
+        .btn {
+        /* Your existing styles */
+        border: none;
+        border-radius: 4px  ;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 14px;
+        padding: 2px;
+        width: 70px;
+        cursor: pointer;
+        margin: 4px;
+    }
+  </style>
+</head>
+<div class="content-wrapper" style="background-color: rgb(240, 240, 240);">
+  <div class="container-fluid py-4">
+    <div class="card">
+        <div class="card-header">
+            <h6>Tabel Data Kasir</h6>
+        </div>    
+    <div class = "card-body">
+        
+        <form action="/dataKasir/add" method="POST">
+            <div class="table-responsive">
+              <table  class="form-table">  
+                  <tr>
+                      <td><label for="Username">Username</label></td>
+                      <td><input  class="input-field" type="text" name="username" required></td>
+                      <td>Telepon</td>
+                      <td><input class="input-field" type="text" name="telepon" required></td>
+                      <td>Password</td>
+                      <td><input  class="input-field" type="text" name="password" required></td>
+                  </tr>
+                  <tr>
+                      <td> <label for="nama_lengkap">Nama Lengkap</label></td>
+                      <td><input class="input-field" type="text" name="nama_lengkap" required></td>
+                      <td>Alamat</td>
+                      <td><input class="input-field" type="text" name="alamat" required></td>
+                  </tr>
+                  <tr>
+                      <td colspan="2">
+                          <button   class="btn btn-success rounded-3" type="submit" name="aksi" value="simpan" required>Simpan</button>
+                      </td>
+                  </tr>
+              </table>
+          </form><br>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="kasirTable" class="table table-bordered table-striped table-hover">
+                    <thead class="table-primary" >
+                        <tr>
+                            <th>Username</th>
+                            <th>Nama Lengkap</th>
+                            <th>Telepon</th>
+                            <th>Alamat</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% kasir.forEach(function(item) { %>
+                            <tr>
+                                <td><%= item.username %></td>
+                                <td><%= item.nama_lengkap %></td>
+                                <td><%= item.telepon %></td>
+                                <td><%= item.alamat %></td>
+                                <td colspan="2">
+                                    <center><div class="btn-group">
+                                        <form action="/dataKasir/delete/<%= item.username %>" method="POST">
+                                            <button  class="btn btn-danger rounded-3" onclick="return confirm('Apakah Anda yakin ingin menghapus data kasir ini?')" type="submit"><i class="fa-solid fa-trash-can"></i> Delete</button>
+                                        </form>
+                                        <!-- Button to trigger the modal for editing -->
+                                        <a href="#" class="btn btn-warning rounded-3" data-toggle="modal" data-target="#updateModal_<%= item.username %>">
+                                            <i class="fas fa-edit"></i> Update 
+                                        </a>
+                                          <!-- Modal -->
+                                          <div class="modal fade" id="updateModal_<%= item.username %>" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="updateModalLabel">Update Data Kasir</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="/dataKasir/update/<%= item.username %>" method="POST">
+                                                        <div class="form-group row">
+                                                            <label for="nama" class="col-sm-4 col-form-label">Nama Lengkap</label>
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control" type="text" name="nama_lengkap" value="<%= item.nama_lengkap %>" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="telpon" class="col-sm-4 col-form-label">Telepon</label>
+                                                            <div class="col-sm-8">
+                                                                <input class=" form-control" type="text" name="telepon" value="<%= item.telepon %>" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="alamat" class="col-sm-4 col-form-label">Alamat</label>
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control"  type="text" name="alamat" value="<%= item.alamat %>" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button  class="btn btn-success rounded-3" type="submit">Simpan</button>
+                                                        </form>
+                                                        <button type="button" class="btn btn-danger rounded-3" data-dismiss="modal">Batal</button>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            
+                                        <!-- Button to trigger the modal for editing -->
+                                        <a href="#" class="btn btn-primary rounded-3" data-toggle="modal" data-target="#resetModal_<%= item.username %>">
+                                            <i class="fas fa-edit"></i> Reset Password
+                                        </a>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="resetModal_<%= item.username %>" tabindex="-1" role="dialog" aria-labelledby="resetModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="resetModalLabel">Reset Password Kasir</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="/dataKasir/reset-password/<%= item.username %>" method="POST">
+                                                        <div class="form-group row">
+                                                            <label for="password" class="col-sm-4 col-form-label">New Password</label>
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control" type="text" name="newPassword" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button  class="btn btn-success rounded-3" type="submit">Simpan</button>
+                                                            </form>
+                                                            <button type="button" class="btn btn-danger rounded-3" data-dismiss="modal">Batal</button>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                        </div></center>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#kasirTable').DataTable();
+  });
+</script>
+
+<%- include ('layout/footer') %>

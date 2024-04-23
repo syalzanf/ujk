@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Admin</title>
+    <link id="pagestyle" href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- DataTables CSS -->
+    <!-- <link rel="stylesheet" type="text/css" href="/assets/css/jquery.dataTables.min.css"> -->
+    <!-- <link rel="stylesheet" href="/assets/css/dataTables.bootstrap4.css"> -->
+    <link type="text/css" charset="utf8" rel="stylesheet"  href="/assets/css/datatables.css">
+    <link type="text/css" charset="utf8" rel="stylesheet" href="/assets/css/datatables.min.css">
+
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="/assets/js/datatables.js"></script>
+    <script type="text/javascript" charset="utf8" src="/assets/js/datatables.min.js"></script>
+  <!-- Tambahkan CSS khusus untuk mengatur lebar form -->
+  <style>
+    body {
+      background-color: rgb(0, 60, 75);
+    }
+    .custom-form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .custom-container {
+      border-radius: 6px;
+      width: 30%; /* Adjust the width based on your preference */
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn {
+      border-radius: 4px;
+      background-color: rgb(0, 60, 75);
+      border: none;
+      color: #FFFFFF;
+      text-align: center;
+      font-size: 15px;
+      padding: 8px; /* Adjust the padding for a more spacious button */
+      width: 100%; /* Make the button full-width */
+      cursor: pointer;
+      margin-top: 15px; /* Add some top margin for separation */
+    }
+
+    .btn:hover {
+      background-color: rgb(0, 138, 172);
+    }
+
+    .logo-icon {
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .button-link {
+        display: inline-block;
+        padding: 5px 10px;
+        color: #0490e7;
+        border: none;
+        text-decoration: none;
+        text-align: center;
+        font-size: 15px;
+        padding: 8px; /* Adjust the padding for a more spacious button */
+        width: 100%;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .button-link:hover {
+      color: #127de7;
+    }
+
+      /* Styling for the Add New Contact button */
+        .add-contact-button {
+        margin-top: 20px;
+        margin-right: 140px; /* Menambahkan margin ke kanan */
+         /* Menggeser ke kanan */
+        float: right; /* Menggeser ke kanan */
+    }
+    /* Add your other styles */
+
+    .flash-message {
+      padding: 5px;
+      margin-bottom: 5px;
+      border-radius: 5px;
+    }
+
+    .success {
+      background-color: #4CAF50; /* Green */
+      color: white;
+    }
+
+    .error {
+      background-color: #f44336; /* Red */
+      color: white;
+    }
+    .forgot-heading {
+            text-align: center; /* Pusatkan teks */
+            color: rgb(0, 60, 75); /* Warna teks */
+            margin-bottom: 20px; /* Atur jarak bawah */
+        }
+  </style>
+</head>
+<body>
+  <div class="container mt-5 custom-container">
+    <h4 class="forgot-heading">Forgot Password</h4>
+
+    <% if (messages.success) { %>
+     <center><div class="flash-message success">
+        <%= messages.success %>
+      </div></center>
+    <% } %>
+    
+    <% if (messages.error) { %>
+    <center> <div class="flash-message error">
+        <%= messages.error %>
+      </div></center>
+    <% } %>
+    <form action="/forgotPass" method="POST" class="custom-form px-4">
+      <div class="mb-3">
+        <input type="email" id="email" name="email" class="form-control" placeholder="Enter email address" required>
+      </div>
+      <button type="submit" class="btn">Submit</button>
+    </form>
+  </div>
+</body>
+</html>
+
+

@@ -1,0 +1,80 @@
+<%- include ('layout/header') %>
+<%- include (isAdmin ? 'layout/navAdmin' : 'layout/navKasir') %>
+
+<link type="text/css" charset="utf8" rel="stylesheet"  href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.css">
+<link type="text/css" charset="utf8" rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
+<title>Laporan Penjualan</title>
+
+<style>
+    @media print {
+        title {
+        display: none;
+        }    
+    }
+</style>
+<div class="content-wrapper" style="background-color: rgb(240, 240, 240);">
+        <div class="container-fluid py-4">
+            <h3>Laporan Penjualan</h3><br>
+            
+            <div class="card">
+                <div class="card-header" style="display: flex; justify-content: space-between;">
+                <h6>Tabel Penjualan Barang</h6>
+            </div>
+            <div class = "card-body">   
+            <div class="table-responsive">
+               
+                <table id="penjualanTable"  class="table table-bordered table-striped table-hover">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Kode Transaksi</th>
+                            <th>Kasir</th>
+                            <th>Kode Barang</th>
+                            <th>Nama Barang</th>
+                            <th>Qty</th>
+                            <th>Harga</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% penjualan.forEach(function(item) { %>
+                            <tr>
+                                <td><%= item.tgl instanceof Date ? item.tgl.toDateString() : new Date(item.tgl).toDateString()%></td>
+                                <td><%= item.kode_transaksi %></td>
+                                <td><%= item.kasir %></td>
+                                <td><%= item.kode_barang %></td>
+                                <td><%= item.nama_barang %></td>
+                                <td><%= item.qty %></td>
+                                <td><%= item.harga %></td>
+                                <td><%= item.total %></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+
+<script>
+new DataTable('#penjualanTable', {
+    layout: {
+        topStart: {
+            buttons: ['print']
+        }
+    }
+});
+</script>
+
+<%- include ('layout/footer') %>
+</html>

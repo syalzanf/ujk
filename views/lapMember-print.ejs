@@ -1,0 +1,47 @@
+<%- include ('layout/header') %>
+<div class="content">
+    <div class="container-fluid py-4">
+    <div class="card">
+        <div class="card-header" style="display: flex; justify-content: space-between;">
+        <h4>Laporan Data Member</h4>
+    </div>
+    <div class = "card-body">   
+    <div class="table-responsive">
+    
+        <table class="table table-bordered"> 
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Kode Member</th>
+                    <th>Nama</th>
+                    <th>Telepon</th>
+                    <th>Alamat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% let nomorUrut = 1; %>
+                <% member.forEach(function(item) { %>
+                    <tr>
+                        <td><%= nomorUrut %></td>
+                        <td><%= item.kode_member %></td>
+                        <td><%= item.nama %></td>
+                        <td><%= item.telepon %></td>
+                        <td><%= item.alamat %></td>
+                    </tr>
+                    <% nomorUrut++; %>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    </div>
+</div>
+</div>
+
+    <script>
+        // Memicu pencetakan otomatis saat halaman dimuat
+        window.onload = function() {
+            window.print();
+        };
+    </script>
+<%- include ('layout/footer') %>

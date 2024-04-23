@@ -1,0 +1,60 @@
+<%- include ('layout/header') %>
+<%- include ('layout/navAdmin') %>
+<%- include (role === 'admin' ? 'layout/navAdmin' : 'layout/navKasir') %>
+
+<div class="content-wrapper" style="background-color: rgb(240, 240, 240);">
+        <div class="container-fluid py-4">
+            <h3>Laporan Stok Barang</h3><br>
+            
+            <div class="card">
+                <div class="card-header" style="display: flex; justify-content: space-between;">
+                <h6>Tabel Stok Barang</h6>
+                <a href="/lapStok/print" class="btn btn-primary"><i class="fas fa-print"></i> Print</a>
+            </div>
+            <div class = "card-body">   
+            <div class="table-responsive">
+               
+                <table id="stokTable"  class="table table-bordered table-striped table-hover">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Kode Barang</th>
+                            <th>Nama Barang</th>
+                            <th>Stok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% let totalStok = 0; %>
+                        <% stok.forEach(function(item) { %>
+                            <tr>
+                                <td><%= item.kode_barang %></td>
+                                <td><%= item.nama_barang %></td>
+                                <td><%= item.stok %></td>
+                            </tr>
+                            <% totalStok += +item.stok; %>
+                        <% }); %>
+                    </tbody>                    
+                    <tfoot>
+                        <tr>
+                            <th colspan="2">Total Stok</th>
+                            <th><%= totalStok %> pcs</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+ 
+
+<script>
+    $(document).ready(function () {
+      $('#stokTable').DataTable();
+    });
+</script>
+
+
+<%- include ('layout/footer') %>

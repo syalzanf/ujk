@@ -1,0 +1,366 @@
+<%- include ('layout/header') %>
+<%- include ('layout/navKasir') %>
+<% if (typeof success !== 'undefined') { %>
+    <div class="alert alert-success" role="alert">
+        <%= success %>
+    </div>
+<% } %>
+
+<div class="content-wrapper" style="background-color: rgb(240, 240, 240);">
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">    
+            <table class="table">
+                <tr>
+                    <td style="border: none;"><i class="fa-solid fa-circle-user"></i> <%= kasir %> </td>
+                    <td style="border: none;"><i class="fa-solid fa-cart-shopping"></i> <%= kode_transaksi %> </td>
+                </tr>
+                <tr>
+                    <td style="border: none;"></td>
+                    <td style="border: none;"><i class="fa-solid fa-calendar-days"></i> <%= tgl %></td>
+                </tr>
+            </table>            
+            <div class="card mt-3 mb-5" style="width: 500px; height: 550px;">
+                 <div class="card-header">
+                        <h6>Input Penjualan</h6>
+                    </div> 
+                <div class="card-body"> 
+                    <form action="/penjualan/add" method="POST">
+                        <div class="mb-3">
+                            <label for="InputBayar" class="form-label">Pembayaran</label>
+                            <input class="form-control" type="text" placeholder="Tunai" readonly>
+                        </div>
+                        <div class="mb-3"> 
+                            <label for="InputKode" class="form-label">Kode Barang</label>
+                            <select id="inputKodeBarang" name="kode_barang" class="form-control"  onchange="updateHargaDanTotal()">
+                                <option selected disabled>Pilih Kode Barang</option>
+                                <% barang.forEach(function(item) { %>
+                                    <option value="<%= item.kode_barang %>">
+                                        <%= item.kode_barang %> - <%= item.nama_barang %>
+                                    </option>
+                                <% }); %>
+                            </select>
+                            <input type="hidden" id="InputNamaBarang" name="nama_barang">
+                        </div>
+                        <div class="mb-3">
+                            <label for="InputQty" class="form-label">Qty</label>
+                            <input type="text" class="form-control" id="InputQty" name="qty">
+                        </div>
+                        <div class="mb-3">
+                            <label for="InputHarga" class="form-label">Harga</label>
+                            <input class="form-control" type="text" id="InputHarga" name="harga" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="InputTotal" class="form-label">Total</label>
+                            <input class="form-control" type="text" id="InputTotal" name="total" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-success me-2">Tambah</button>
+                            <button type="button" class="btn btn-danger" onclick="resetForm()">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mt-4" style="width: 500px; height: 570px;">
+                <div class="card-header">
+                    <h6>Keranjang Penjualan</h6>
+                </div> 
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <!-- tabel keranjang-->
+                        <table class="table table-bordered table-hover text-center" style="width: 100%;">
+                            <thead class="bg-light">
+                                <tr> 
+                                    <th>Kode Penjualan</th>
+                                    <th>Kasir</th>
+                                    <th>Tanggal</th>
+                                    <th>Kode Barang</th>
+                                    <th>Nama Barang</th>
+                                    <th>Harga</th>
+                                    <th>Qty</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (keranjang && keranjang.length > 0) { %>
+                                    <% keranjang.forEach(function(item) { %>
+                                    <tr>
+                                        <td><%= item.kode_penjualan %></td>
+                                        <td><%= item.kasir %></td>
+                                        <td><%= item.tgl %></td>
+                                        <td><%= item.kode_barang %></td>
+                                        <td><%= item.nama_barang %></td>
+                                        <td><%= item.harga %></td>
+                                        <td><%= item.qty %></td>
+                                        <td><%= item.total %></td>
+                                        <td><button onclick="hapusItem('<%= item.kode_barang %>')">Hapus</button></td> 
+                                    </tr>
+                                <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="8">Keranjang kosong</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                    </table>
+                </div>
+
+               
+                
+                <form action="/penjualan/save" method="POST">
+                    <div class="form-group row">
+                        <label for="inputSubtotal" class="col-sm-3 col-form-label col-form-label-sm">Subtotal</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" value="<%= subtotal %>"  id="inputSubtotal"  name="subtotal">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-3
+                         col-form-label col-form-label-sm">Member</div>
+                        <div class="col-sm-6 col-form-label col-form-label-sm">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="gridCheck1" name="isMember" >
+                                <label class="form-check-label" for="gridCheck1">
+                                    diskon member 30%
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="inputPassword3" class="col-sm-3 col-form-label col-form-label-sm"></label>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <select id="inputMember" class="form-control form-control-sm" name="discountCode" disabled>
+                                    <option selected>Masukkan kode member</option>
+                                    <% kodeMemberOptions.forEach(kode => { %>
+                                        <option value="<%= kode %>"><%= kode %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputTotalSebelumDiskon" class="col-sm-3 col-form-label col-form-label-sm">Total</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" id="inputTotalSebelumDiskon" value="<%= subtotal %>" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputCash" class="col-sm-3 col-form-label col-form-label-sm">Cash</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" name="cash" id="inputCash" oninput="hitungKembalian()">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputKembalian" class="col-sm-3 col-form-label col-form-label-sm">Kembalian</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-sm" name="kembalian" id="inputKembalian" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <form action="/penjualan/save" method="POST">
+                                <input type="hidden" name="savePenjualan" >
+                                <button class="btn btn-warning" type="submit">Simpan&Cetak</button>
+                              </form>
+                        </div>
+                    </div>
+                </form>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<%- include ('layout/footer') %>
+
+<script>
+    var formData = {}; // Objek untuk menyimpan data formulir sementara
+
+    var barangData;
+
+    // Fungsi untuk mengumpulkan data formulir saat pengguna mengubahnya
+    function simpanDataFormulir() {
+        formData.kode_barang = document.getElementById('inputKodeBarang').value;
+        formData.qty = document.getElementById('InputQty').value;
+        formData.harga = document.getElementById('InputHarga').value;
+        formData.total = document.getElementById('InputTotal').value;
+    }
+
+    function fetchDataFromServer() {
+    fetch('/detail-barang')
+    .then(response => response.json())
+    .then(data => {
+        barangData = data; // Set the received data to the global variable
+        console.log('Data from server:', barangData);
+    })
+    .catch(error => console.error('Error fetching data:', error));
+    }
+
+    // Call the function to fetch data when the page loads
+    window.onload = function() {
+        fetchDataFromServer();
+    };
+
+    function hapusItem(kode_barang) {
+        fetch(`/keranjang/delete/${kode_barang}`, {
+            method: 'POST'
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Item berhasil dihapus dari keranjang');
+                // Lakukan hal-hal yang diperlukan setelah item dihapus, misalnya, perbarui tampilan keranjang
+            } else {
+                console.error('Gagal menghapus item dari keranjang');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+
+    // Fungsi untuk memperbarui harga dan total berdasarkan kode barang yang dipilih
+    function updateHargaDanTotal() {
+        var kodeBarang = document.getElementById('inputKodeBarang').value;
+
+        // Temukan data barang yang sesuai dari array barang
+        var selectedBarang = barangData.find(function(item) {
+            return item.kode_barang === kodeBarang;
+        });
+
+        // Periksa apakah data barang ditemukan
+        if (true) {
+            // Perbarui harga pada input harga
+            document.getElementById('InputHarga').value = selectedBarang.harga;
+            // Perbarui total
+            updateTotal();
+        }
+    }
+
+    // Fungsi untuk menghitung total
+    function updateTotal() {
+        var harga = parseFloat(document.getElementById('InputHarga').value);
+        var qty = parseFloat(document.getElementById('InputQty').value);
+        var kodeBarang = document.getElementById('inputKodeBarang').value;
+        var selectedBarang = barangData.find(function(item) {
+            return item.kode_barang === kodeBarang;
+        });
+        if(qty > selectedBarang.stok){
+            alert("Jumlah stok kurang, hanya tersedia "+selectedBarang.stok)
+        }
+        if (!isNaN(harga) && !isNaN(qty)) {
+            var total = harga * qty;
+            document.getElementById('InputTotal').value = total.toFixed(2); // Atur nilai total dengan dua angka desimal
+        }
+    }
+
+    // Event listener untuk input kode barang
+    document.getElementById('inputKodeBarang').addEventListener('change', function() {
+        updateHargaDanTotal(); // Panggil fungsi untuk memperbarui harga dan total
+    });
+
+    // Event listener untuk input qty
+    document.getElementById('InputQty').addEventListener('input', function() {
+        simpanDataFormulir();
+        updateTotal();
+    });
+
+    // Event listener untuk input harga
+    document.getElementById('InputHarga').addEventListener('input', function() {
+        simpanDataFormulir();
+        updateTotal();  
+    });
+
+    // Event listener untuk checkbox member
+    document.getElementById('gridCheck1').addEventListener('change', function() {
+        const inputMember = document.getElementById('inputMember');
+        // Jika checkbox dicentang
+        if (this.checked) {
+            const subtotal = parseFloat(document.getElementById('inputSubtotal').value);
+            if(subtotal < 500000){
+                alert("tidak boleh");
+                var checkbox = document.getElementById("gridCheck1");
+                // Mengatur properti checked menjadi false
+              checkbox.checked = false;
+              hitungDanTampilkanTotalSetelahDiskon();
+            }else{
+            // Aktifkan input kode member
+              inputMember.removeAttribute('disabled');
+            }
+        } else {
+            // Jika checkbox tidak dicentang
+            // Nonaktifkan input kode member
+            inputMember.setAttribute('disabled', 'disabled');
+            // Jika checkbox tidak dicentang, reset nilai input kode member menjadi default
+            inputMember.value = "Masukkan kode member";
+            // Panggil fungsi untuk menghitung dan menampilkan total setelah diskon kembali ke subtotal
+            hitungDanTampilkanTotalSetelahDiskon();
+        }
+    });
+
+    // Event listener untuk input kode member
+    document.getElementById('inputMember').addEventListener('change', function() {
+        // Jika input kode member dipilih
+        if (this.value !== "Masukkan kode member") {
+            // Hitung dan tampilkan total setelah diskon saat input kode member dipilih
+            hitungDanTampilkanTotalSetelahDiskon();
+        }
+    });
+
+    // Fungsi untuk menghitung dan menampilkan total setelah diskon
+    function hitungDanTampilkanTotalSetelahDiskon() {
+        // Ambil nilai subtotal dari input
+        const subtotal = parseFloat(document.getElementById('inputSubtotal').value);
+
+        // Ambil nilai diskon (dalam persen)
+        const diskon = 0.3; // 30% diskon untuk member, Anda dapat mengubahnya sesuai kebutuhan
+
+        // Jika input kode member dipilih
+        const inputMember = document.getElementById('inputMember');
+        if (inputMember.value !== "Masukkan kode member") {
+            // Terapkan diskon
+            const totalSetelahDiskon = subtotal * (1 - diskon);
+            // Tampilkan total setelah diskon pada elemen input
+            document.getElementById('inputTotalSebelumDiskon').value = totalSetelahDiskon.toFixed(2); // Atur nilai total setelah diskon dengan dua angka desimal
+        } else {
+            // Jika tidak, gunakan subtotal langsung
+            document.getElementById('inputTotalSebelumDiskon').value = subtotal.toFixed(2);
+        }
+    }
+
+    // Fungsi untuk menghitung kembalian
+    function hitungKembalian() {
+        // Ambil nilai cash dari input
+        const cash = parseFloat(document.getElementById('inputCash').value);
+        
+        // Ambil nilai subtotal dari input
+        const subtotal = parseFloat(document.getElementById('inputTotalSebelumDiskon').value);
+        
+        // Validasi apakah nilai cash dan subtotfal valid (bukan NaN)
+        if (!isNaN(cash) && !isNaN(subtotal)) {
+            // Hitung kembalian
+            const kembalian = cash - subtotal;
+
+            // Tampilkan kembalian pada input kembalian
+            document.getElementById('inputKembalian').value = kembalian.toFixed(2);
+        } else {
+            // Jika nilai cash atau subtotal tidak valid, atur kembalian menjadi kosong
+            document.getElementById('inputKembalian').value = '';
+        }
+    }
+
+    // Event listener untuk input cash
+    document.getElementById('inputCash').addEventListener('input', hitungKembalian);
+
+    // Event listener untuk input subtotal
+    document.getElementById('inputSubtotal').addEventListener('input', function() {
+        // Panggil fungsi untuk menghitung dan menampilkan total setelah diskon
+        hitungDanTampilkanTotalSetelahDiskon();
+    });
+</script>

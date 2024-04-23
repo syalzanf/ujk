@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Struk Penjualan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .info {
+            margin-bottom: 10px;
+        }
+        .item {
+            margin-bottom: 5px;
+        }
+        .total {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Struk Penjualan</div>
+        <div class="info">
+            <div class="item">Kode Transaksi: <%= data.kodeTransaksi %></div>
+            <div class="item">Tanggal Transaksi: <%= data.tanggalTransaksi %></div>
+            <div class="item">Kasir: <%= data.kasir %></div>
+            <div class="item">Barang yang dibeli:</div>
+            <% if (Array.isArray(data.transaksiInfo)) { %>
+                <% data.transaksiInfo.forEach(item => { %>
+                    <div class="item"><%= item %></div>
+                <% }); %>
+            <% } else { %>
+                <div class="item"><%= data.transaksiInfo %></div>
+            <% } %>
+        </div>
+        <div class="total">Total Bayar: <%= data.totalBayar %> IDR</div>
+        <div class="info">
+            <div class="item">Pembayaran: <%= data.pembayaran %> IDR</div>
+            <div class="item">Kembalian: <%= data.kembalian %> IDR</div>
+        </div>
+    </div>
+</body>
+</html>

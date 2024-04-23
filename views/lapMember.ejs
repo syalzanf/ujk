@@ -1,0 +1,48 @@
+<%- include ('layout/header') %>
+<%- include ('layout/navAdmin') %>
+<div class="content-wrapper" style="background-color: rgb(240, 240, 240);">
+    <div class="container-fluid py-4">
+        <!-- Konten Laporan Data Member -->
+        <h3>Laporan Data Member</h3><br>
+
+        <div class="table-responsive">
+            <div class="card">
+                <div class="card-header" style="display: flex; justify-content: space-between;">
+                    <h6>Tabel Data Member</h6>
+                    <a href="/lapMember/print" class="btn btn-primary"><i class="fas fa-print"></i> Print</a>
+                </div>                
+                <div class = "card-body">
+                     
+                <div class="table-responsive">
+            <table id="memberTable"  class="table table-bordered table-striped table-hover"> 
+                <thead class="table-success">
+                    <tr>
+                        <th>Kode Member</th>
+                        <th>Nama</th>
+                        <th>Telepon</th>
+                        <th>Alamat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% member.forEach(function(item) { %>
+                        <tr>
+                            <td><%= item.kode_member %></td>
+                            <td><%= item.nama %></td>
+                            <td><%= item.telepon %></td>
+                            <td><%= item.alamat %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<script>
+    $(document).ready(function () {
+      $('#memberTable').DataTable();
+    });
+</script>
+<%- include ('layout/footer') %>

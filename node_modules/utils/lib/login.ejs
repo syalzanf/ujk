@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Tambahkan link ke file Bootstrap CSS -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: rgb(0, 60, 75); /* Ganti dengan warna yang diinginkan */
+        }
+        /* Atur warna latar belakang container */
+        .custom-container {
+            background-color: #ffffff; /* Ganti dengan warna yang diinginkan */
+            width: 370px; /* Atur lebar container */
+            padding: 20px; /* Berikan ruang padding di dalam container */
+            margin-top: 50px; /* Atur jarak atas dari container */
+            border-radius: 10px;
+        }
+
+        /* Atur ukuran dan posisi tombol */
+        .custom-button {
+            width: 100%; /* Tombol mengisi lebar container */
+            margin-top: 20px; /* Atur jarak atas tombol */
+            background-color: rgb(0, 60, 75); /* Ganti dengan warna yang diinginkan */
+            color: #ffffff; /* Warna teks tombol */
+            border: none; /* Hilangkan border */
+        }
+        .custom-button:hover {
+            background-color: rgb(0, 135, 168); /* Warna saat tombol dihover */
+        }
+        .custom-label {
+            font-weight: 100px;
+            color: rgb(0, 167, 209); 
+            font-size: 16px;
+        }
+        .login-heading {
+            text-align: center; /* Pusatkan teks */
+            color: rgb(0, 60, 75); /* Warna teks */
+            margin-bottom: 20px; /* Atur jarak bawah */
+        }
+        .forgot-btn {
+            color: rgb(0, 167, 209); 
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Container dengan ukuran biasa dan warna kustom -->
+    <div class="container custom-container">
+        <div class="text-center mb-2">
+            <img src="./assets/img/unname1.png" alt="Logo" width="80">
+            <!-- <img src="./assets/img/unname2.png" alt="Logo" width="70"> -->
+        </div>
+        <h4 class="login-heading">Login</h4>
+       
+        <% if (error) { %>
+            <center><p class="text-danger"><%= error %></p></center>
+          <% } %>
+
+        <form action="/" method="POST">
+            <div class="form-group">
+                <label for="username" class="custom-label">Username</label>
+                <input type="text" id="username" name="username" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="password" class="custom-label">Password</label>
+                <input type="password" id="password" name="password" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="role" class="custom-label">Role</label>
+                <select id="role" name="role" required class="form-control">
+                    <option value="admin">Admin</option>
+                    <option value="kasir">Kasir</option>
+                </select>
+            </div>
+            <!-- Tambahkan kelas custom-button ke tombol -->
+            <button type="submit" class="btn custom-button btn-block">Login</button>
+            <div class="mt-3 text-center">
+                <a href="/forgotPass" class="btn btn-link forgot-btn">Forgot password?</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tambahkan link ke file Bootstrap JavaScript (Opsional, hanya jika Anda menggunakan fitur JavaScript Bootstrap) -->
+    <script src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<%- include ('layout/header') %>
+<%- include (isAdmin ? 'layout/navAdmin' : 'layout/navKasir') %>
+<head>
+<link id="pagestyle" href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+<script type="text/javascript" charset="utf8" src="/assets/js/bootstrap.min.js"></script>
+
+<style>
+        .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000; 
+        }
+        .form-table {
+            width: 70%;
+            border-collapse: collapse;
+            margin: 20px;
+            /* Tambahkan gaya lain sesuai kebutuhan Anda */
+        }
+        .form-table td {   
+            padding: 4px;
+            text-align: left;
+        }
+        .input-field {
+        width: 80%;
+        padding: 1px;
+        outline: none;
+        border: 1 solid rgb(212, 212, 212);
+        }
+
+        .input-field:focus {
+        border: 2px solid rgb(71, 170, 236);
+        }
+        .btn {
+        /* Your existing styles */
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 14px;
+        padding: 2px;
+        width: 70px;
+        cursor: pointer;
+        margin: 4px;
+    }
+</style>
+</head>
+
+<div class="content-wrapper" style="background-color: rgb(240, 240, 240);">
+  <div class="container-fluid py-4">
+    <div class="card">
+        <div class="card-header">
+            <h6>Tabel Data Barang</h6>
+        </div>    
+    <div class = "card-body">
+
+            <% if (isAdmin) { %>
+            <form action="/barang/add" method="POST">
+            <div class="table-responsive">
+              <table  class="form-table">  
+                  <tr>
+                      <td><label for="kodeBarang">Kode Barang</label></td>
+                      <td><input  class="input-field" type="text" name="kode_barang" required></td>
+                      <td>Harga</td>
+                      <td><input  class="input-field" type="text" name="harga" required></td>
+                      
+                  </tr>
+                  <tr>
+                      <td> <label for="judul">Nama Barang</label></td>
+                      <td><input class="input-field" type="text" name="nama_barang" required></td>
+                      <td>Stok</td>
+                      <td><input class="input-field" type="text" name="stok" required></td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <button  class="btn btn-success rounded-3" type="submit" name="aksi" value="simpan" required>Simpan</button>
+                      </td>
+                  </tr>
+              </table>
+          </form>
+          <% } %>
+
+          <div class="card">
+            <div class="card-header">
+                <div class = "card-body">
+                    <table id="barangTable" class="table table-bordered table-striped table-hover">
+                        <thead class="table-primary"> 
+                            <tr>
+                                <th>Kode Barang</th>
+                                <th>Nama</th>
+                                <th>Harga</th>
+                                <th>Stok</th>
+                                <% if (isAdmin) { %>
+                                <th>Aksi</th>
+                                <% } %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% barang.forEach(function(item) { %>
+                                <tr>
+                                    <td><%= item.kode_barang %></td>
+                                    <td><%= item.nama_barang %></td>
+                                    <td><%= item.harga %></td>
+                                    <td><%= item.stok %></td>
+                                    <% if (isAdmin) { %>
+                                    <td colspan="2">
+                                      <center>
+                                      <div class="btn-group">
+                                       <!-- Button to trigger the modal for editing -->
+                                        <a href="#" class="btn btn-warning rounded-3" data-toggle="modal" data-target="#editModal_<%= item.kode_barang %>">
+                                            <i class="fas fa-edit"></i> Edit 
+                                        </a>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="editModal_<%= item.kode_barang %>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel">Edit Barang</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="/barang/update/<%= item.kode_barang %>" method="POST">
+                                                <div class="form-group row">
+                                                    <label for="kode_barang" class="col-sm-4 col-form-label">Kode Barang</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control" type="text" name="kode_barang" value="<%= item.kode_barang %>" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="nama" class="col-sm-4 col-form-label">Nama Barang</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control" type="text" name="nama_barang" value="<%= item.nama_barang %>" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="harga" class="col-sm-4 col-form-label">Harga</label>
+                                                    <div class="col-sm-8">
+                                                        <input class=" form-control" type="text" name="harga" value="<%= item.harga %>" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="harga" class="col-sm-4 col-form-label">Stok</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control" type="number" name="stok" value="<%= item.stok %>" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button  class="btn btn-success rounded-3" type="submit">Simpan</button>
+                                                </form>
+                                                <button type="button" class="btn btn-danger rounded-3" data-dismiss="modal">Batal</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+
+
+                                          <form action="/barang/delete/<%= item.kode_barang %>" method="POST">
+                                            <button class="btn btn-danger rounded-3" onclick="return confirm('Apakah Anda yakin ingin menghapus buku ini?')"><i class="fa-solid fa-trash-can"></i> Hapus </button>
+                                        </form>
+                                      </div>
+                                  </center>
+                                  </td>
+                                  <% } %>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div> 
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#barangTable').DataTable();
+  });
+  
+</script>
+<!-- JavaScript code to handle modal functionality -->
+<!-- <script>
+    function openModal(bookId) {
+        $("#editModal_" + bookId).show();
+    }
+
+    function closeModal(bookId) {
+        $("#editModal_" + bookId).hide();
+    }
+
+    // Close the modal when clicking outside the modal
+    $(".modal").click(function () {
+        $(".modal").hide();
+    });
+
+    // Prevent modal from closing when clicking inside the modal
+    $(".modal-content").click(function (event) {
+        event.stopPropagation();
+    });
+    // Get the modal and button elements
+    var modal = document.getElementById('myModal');
+    var btnOpenModal = document.getElementById('btnOpenModal');
+    var btnCloseModal = document.getElementById('btnCloseModal');
+
+    // Open the modal when the button is clicked
+    btnOpenModal.onclick = function() {
+        modal.style.display = 'block';
+    }
+
+    // Close the modal when the close button is clicked
+    btnCloseModal.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    // Close the modal if the user clicks outside of it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script> -->
+
+<%- include ('layout/footer') %>
